@@ -98,12 +98,13 @@ public class FormRekapNilai extends javax.swing.JFrame {
         return false;
     }
 
-    if (!nilaiValid(uasLabel.getText())) {
-        tampilkanError("Nilai UAS harus angka bulat 0 sampai 100",
-            uasLabel
-        );
-        return false;
-    }
+if (!nilaiValid(txtUas.getText())) {
+    tampilkanError(
+        "Nilai UAS harus angka bulat 0 sampai 100",
+        txtUas
+    );
+    return false;
+}
 
     return true;
 }
@@ -286,8 +287,7 @@ public class FormRekapNilai extends javax.swing.JFrame {
 
     perbaruiRingkasan();
 
-    bersihkanForm();
-}        // TODO add your handling code here:
+    bersihkanForm();     // TODO add your handling code here:
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBersihkanActionPerformed
