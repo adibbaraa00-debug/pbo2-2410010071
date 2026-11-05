@@ -1,3 +1,5 @@
+//Adib Baraa Taufani - 2410010071
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -6,18 +8,129 @@ package id.ac.uniska.pbo2.p08.uts;
 
 /**
  *
- * @author Raihan
+ * @author Adib
  */
 public class FormRekapNilai extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormRekapNilai.class.getName());
-
+    private final NilaiMahasiswaTableModel model =
+        new NilaiMahasiswaTableModel();
     /**
      * Creates new form FormRekapNilai
      */
     public FormRekapNilai() {
-        initComponents();
+    initComponents();
+
+    tblNilai.setModel(model);
+
+    setTitle("Rekap Nilai Mahasiswa");
+    setLocationRelativeTo(null);
+
+    getRootPane().setDefaultButton(btnSimpan);
+
+    lblPesan.setForeground(
+        java.awt.Color.RED
+    );
+
+    lblPesan.setText("");
+
+    perbaruiRingkasan();
+}
+    
+    private void perbaruiRingkasan() {
+
+    int jumlah = model.getJumlahMahasiswa();
+
+    double rataRata = model.getRataRata();
+
+    String hasil = String.format(
+        java.util.Locale.forLanguageTag("id-ID"),
+        "Jumlah mahasiswa: %d, rata-rata nilai akhir: %.2f",
+        jumlah,
+        rataRata
+    );
+
+    lblRingkasan.setText(hasil);
+}
+    
+    private boolean validasiInput() {
+
+    String npm = txtNpm.getText().trim();
+    String nama = txtNama.getText().trim();
+
+    if (!npm.matches("\\d{10}")) {
+        tampilkanError(
+            "NPM harus 10 digit angka",
+            txtNpm
+        );
+        return false;
     }
+
+    if (model.npmSudahAda(npm)) {
+        tampilkanError(
+            "NPM " + npm + " sudah terdaftar",
+            txtNpm
+        );
+        return false;
+    }
+
+    if (nama.isEmpty()) {
+        tampilkanError(
+            "Nama wajib diisi",
+            txtNama
+        );
+        return false;
+    }
+
+    if (!nilaiValid(txtTugas.getText())) {
+        tampilkanError(
+            "Nilai Tugas harus angka bulat 0 sampai 100",
+            txtTugas
+        );
+        return false;
+    }
+
+    if (!nilaiValid(txtUts.getText())) {
+        tampilkanError(
+            "Nilai UTS harus angka bulat 0 sampai 100",
+            txtUts
+        );
+        return false;
+    }
+
+    if (!nilaiValid(uasLabel.getText())) {
+        tampilkanError("Nilai UAS harus angka bulat 0 sampai 100",
+            uasLabel
+        );
+        return false;
+    }
+
+    return true;
+}
+    
+    private boolean nilaiValid(String teks) {
+
+    try {
+
+        int nilai = Integer.parseInt(teks.trim());
+
+        return nilai >= 0 && nilai <= 100;
+
+    } catch (NumberFormatException e) {
+
+        return false;
+    }
+}
+    
+    private void tampilkanError(
+        String pesan,
+        javax.swing.JTextField field) {
+
+    lblPesan.setText(pesan);
+
+    field.requestFocusInWindow();
+    field.selectAll();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,47 +141,205 @@ public class FormRekapNilai extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        kiriPanel = new javax.swing.JPanel();
+        isianPanel = new javax.swing.JPanel();
+        npmLabel = new javax.swing.JLabel();
+        txtNpm = new javax.swing.JTextField();
+        namaLabel = new javax.swing.JLabel();
+        txtNama = new javax.swing.JTextField();
+        nilaiLabel = new javax.swing.JLabel();
+        txtTugas = new javax.swing.JTextField();
+        utsLabel = new javax.swing.JLabel();
+        txtUts = new javax.swing.JTextField();
+        uasLabel = new javax.swing.JLabel();
+        txtUas = new javax.swing.JTextField();
+        kontrolPanel = new javax.swing.JPanel();
+        lblPesan = new javax.swing.JLabel();
+        buttonPanel = new javax.swing.JPanel();
+        btnSimpan = new javax.swing.JButton();
+        btnBersihkan = new javax.swing.JButton();
+        kosongPanel = new javax.swing.JPanel();
+        tabelPanel = new javax.swing.JPanel();
+        scrollPaneNilai = new javax.swing.JScrollPane();
+        tblNilai = new javax.swing.JTable();
+        lblRingkasan = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        kiriPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        kiriPanel.setLayout(new java.awt.BorderLayout(0, 8));
+
+        isianPanel.setLayout(new java.awt.GridLayout(0, 2, 0, 8));
+
+        npmLabel.setText("NPM");
+        isianPanel.add(npmLabel);
+        isianPanel.add(txtNpm);
+
+        namaLabel.setText("NAMA");
+        isianPanel.add(namaLabel);
+        isianPanel.add(txtNama);
+
+        nilaiLabel.setText("NILAI TUGAS");
+        isianPanel.add(nilaiLabel);
+        isianPanel.add(txtTugas);
+
+        utsLabel.setText("NILAI UTS");
+        isianPanel.add(utsLabel);
+        isianPanel.add(txtUts);
+
+        uasLabel.setText("NILAI UAS");
+        isianPanel.add(uasLabel);
+        isianPanel.add(txtUas);
+
+        kiriPanel.add(isianPanel, java.awt.BorderLayout.NORTH);
+
+        kontrolPanel.setLayout(new java.awt.BorderLayout());
+        kontrolPanel.add(lblPesan, java.awt.BorderLayout.PAGE_START);
+
+        buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        btnSimpan.setText("Simpan");
+        btnSimpan.addActionListener(this::btnSimpanActionPerformed);
+        buttonPanel.add(btnSimpan);
+
+        btnBersihkan.setText("Bersihkan");
+        btnBersihkan.addActionListener(this::btnBersihkanActionPerformed);
+        buttonPanel.add(btnBersihkan);
+
+        kontrolPanel.add(buttonPanel, java.awt.BorderLayout.CENTER);
+
+        kiriPanel.add(kontrolPanel, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout kosongPanelLayout = new javax.swing.GroupLayout(kosongPanel);
+        kosongPanel.setLayout(kosongPanelLayout);
+        kosongPanelLayout.setHorizontalGroup(
+            kosongPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        kosongPanelLayout.setVerticalGroup(
+            kosongPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 212, Short.MAX_VALUE)
         );
+
+        kiriPanel.add(kosongPanel, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(kiriPanel, java.awt.BorderLayout.LINE_START);
+
+        tabelPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        tabelPanel.setLayout(new java.awt.BorderLayout());
+
+        tblNilai.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        scrollPaneNilai.setViewportView(tblNilai);
+
+        tabelPanel.add(scrollPaneNilai, java.awt.BorderLayout.CENTER);
+        tabelPanel.add(lblRingkasan, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(tabelPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+  
+
+    if (!validasiInput()) {
+        return;
+    }
+
+    String npm = txtNpm.getText().trim();
+    String nama = txtNama.getText().trim();
+
+    int tugas = Integer.parseInt(
+        txtTugas.getText().trim()
+    );
+
+    int uts = Integer.parseInt(
+        txtUts.getText().trim()
+    );
+
+    int uas = Integer.parseInt(
+        txtUas.getText().trim()
+    );
+
+    NilaiMahasiswa mahasiswa =
+        new NilaiMahasiswa(
+            npm,
+            nama,
+            tugas,
+            uts,
+            uas
+        );
+
+    model.tambahData(mahasiswa);
+
+    lblPesan.setText("");
+
+    perbaruiRingkasan();
+
+    bersihkanForm();
+}        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBersihkanActionPerformed
+    bersihkanForm();       // TODO add your handling code here:
+    }//GEN-LAST:event_btnBersihkanActionPerformed
+    
+    private void bersihkanForm() {
+
+    txtNpm.setText("");
+    txtNama.setText("");
+    txtTugas.setText("");
+    txtUts.setText("");
+    txtUas.setText("");
+
+    lblPesan.setText("");
+
+    txtNpm.requestFocusInWindow();
+}
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+public static void main(String args[]) {
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FormRekapNilai().setVisible(true));
-    }
+    com.formdev.flatlaf.FlatLightLaf.setup();
+
+    java.awt.EventQueue.invokeLater(() -> {
+        new FormRekapNilai().setVisible(true);
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBersihkan;
+    private javax.swing.JButton btnSimpan;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JPanel isianPanel;
+    private javax.swing.JPanel kiriPanel;
+    private javax.swing.JPanel kontrolPanel;
+    private javax.swing.JPanel kosongPanel;
+    private javax.swing.JLabel lblPesan;
+    private javax.swing.JLabel lblRingkasan;
+    private javax.swing.JLabel namaLabel;
+    private javax.swing.JLabel nilaiLabel;
+    private javax.swing.JLabel npmLabel;
+    private javax.swing.JScrollPane scrollPaneNilai;
+    private javax.swing.JPanel tabelPanel;
+    private javax.swing.JTable tblNilai;
+    private javax.swing.JTextField txtNama;
+    private javax.swing.JTextField txtNpm;
+    private javax.swing.JTextField txtTugas;
+    private javax.swing.JTextField txtUas;
+    private javax.swing.JTextField txtUts;
+    private javax.swing.JLabel uasLabel;
+    private javax.swing.JLabel utsLabel;
     // End of variables declaration//GEN-END:variables
 }
